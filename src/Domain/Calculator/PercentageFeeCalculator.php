@@ -2,7 +2,7 @@
 
 namespace Ifx\Domain\Calculator;
 
-readonly class PercentageFeeCalculator implements TransactionFeeCalculatorInterface
+final readonly class PercentageFeeCalculator implements TransactionFeeCalculatorInterface
 {
     public function __construct(private float $feePercent = 0.005)
     {
@@ -10,6 +10,6 @@ readonly class PercentageFeeCalculator implements TransactionFeeCalculatorInterf
 
     public function calculateFee(float $amount): float
     {
-        return $amount * $this->feePercent;
+        return round((float) bcmul((string) $amount, (string) $this->feePercent, 3), 2);
     }
 }

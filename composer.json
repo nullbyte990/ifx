@@ -2,7 +2,9 @@
     "name": "ifx/recruitment",
     "autoload": {
         "psr-4": {
-            "Ifx\\": "src/"
+            "Ifx\\": "src/",
+            "Unit\\": "tests/unit",
+            "Integration\\": "tests/integration"
         }
     },
     "authors": [
@@ -15,7 +17,7 @@
         "friendsofphp/php-cs-fixer": "^3.64"
     },
     "scripts" : {
-        "fix" : "vendor/bin/php-cs-fixer fix src -v",
+        "fix" : "vendor/bin/php-cs-fixer fix . -v",
         "test": "vendor/bin/phpunit"
     }
 }

@@ -5,7 +5,7 @@ namespace Ifx\Domain\Model;
 use Ifx\Application\Exception\InvalidAmountException;
 use Ifx\Domain\CurrencyEnum;
 
-readonly final class Payment
+final readonly class Payment
 {
     public function __construct(
         public float $amount,

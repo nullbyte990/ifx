@@ -4,7 +4,8 @@ ARG USERNAME=developer
 ARG WORKDIR=/application
 
 RUN apt update && apt install -y curl zsh git \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && docker-php-ext-install bcmath
 
 RUN echo "su - $USERNAME" > /root/.bashrc
 RUN useradd -m -s /bin/zsh $USERNAME
