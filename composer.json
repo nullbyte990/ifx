@@ -19,5 +19,8 @@
     "scripts" : {
         "fix" : "vendor/bin/php-cs-fixer fix . -v",
         "test": "vendor/bin/phpunit"
-    }
+    },
+  "require": {
+    "ext-bcmath": "*"
+  }
 }

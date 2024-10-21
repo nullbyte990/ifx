@@ -7,6 +7,9 @@ use Ifx\Domain\CurrencyEnum;
 
 final readonly class Payment
 {
+    /**
+     * @throws InvalidAmountException
+     */
     public function __construct(
         public float $amount,
         public CurrencyEnum $currency

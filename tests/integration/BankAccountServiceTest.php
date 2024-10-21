@@ -4,7 +4,7 @@ namespace Integration;
 
 use Ifx\Application\Exception\InsufficientBalanceException;
 use Ifx\Application\Exception\InvalidCurrencyException;
-use Ifx\Application\Exception\PaymentsLimitExceededException;
+use Ifx\Application\Exception\DebitOperationsLimitExceededException;
 use Ifx\Application\Service\BankAccountService;
 use Ifx\Domain\CurrencyEnum;
 use Ifx\Domain\Model\BankAccount;
@@ -60,17 +60,17 @@ class BankAccountServiceTest extends TestCase
         $this->bankAccountService->handleDebit($bankAccount, $payment);
     }
 
-    public function testIfDebitThrowsExceptionOnDailyQuotaExceeded(): void
+    public function testIfDebitThrowsExceptionOnOperationsLimitExceeded(): void
     {
         $bankAccount = new BankAccount(
             CurrencyEnum::EUR,
             initialBalance: 100,
-            debitDailyQuota: 1
+            dailyDebitOperationsLimit: 1
         );
         $payment = new Payment(10, CurrencyEnum::EUR);
 
         $this->bankAccountService->handleDebit($bankAccount, $payment);
-        $this->expectException(PaymentsLimitExceededException::class);
+        $this->expectException(DebitOperationsLimitExceededException::class);
         $this->bankAccountService->handleDebit($bankAccount, $payment);
     }
 }
