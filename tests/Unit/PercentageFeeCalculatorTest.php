@@ -1,6 +1,6 @@
 <?php
 
-namespace unit;
+namespace Tests\Unit;
 
 use Ifx\Domain\Calculator\PercentageFeeCalculator;
 use PHPUnit\Framework\Attributes\DataProvider;

@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: ./.docker/php/Dockerfile
     working_dir: /application
+    entrypoint: ["sh", "-c", "composer install --no-interaction && php-fpm"]
     volumes:
       - .:/application
     tty: true

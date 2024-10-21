@@ -2,10 +2,11 @@
 
 namespace Ifx\Domain\Model;
 
+use Ifx\Application\Exception\DebitOperationsLimitExceededException;
 use Ifx\Application\Exception\InsufficientBalanceException;
 use Ifx\Application\Exception\InvalidAmountException;
 use Ifx\Application\Exception\InvalidCurrencyException;
-use Ifx\Application\Exception\DebitOperationsLimitExceededException;
+use Ifx\Application\Service\Clock\ClockInterface;
 use Ifx\Domain\Calculator\TransactionFeeCalculatorInterface;
 use Ifx\Domain\CurrencyEnum;
 
@@ -13,14 +14,16 @@ final class BankAccount
 {
     private float $balance;
     private int $dailyDebitOperationsCount = 0;
+    private ?\DateTimeImmutable $lastDebitOperationDate = null;
 
     /**
      * @throws InvalidAmountException
      */
     public function __construct(
+        private readonly ClockInterface $clock,
         public readonly CurrencyEnum $currency,
         float $initialBalance = 0,
-        private readonly int $dailyDebitOperationsLimit = 3
+        private readonly int $dailyDebitOperationsLimit = 3,
     ) {
         if ($initialBalance < 0) {
             throw new InvalidAmountException(message: 'The initial balance cannot be less than or equal to zero');
@@ -47,6 +50,8 @@ final class BankAccount
      */
     public function debit(Payment $payment, TransactionFeeCalculatorInterface $feeCalculator): void
     {
+        $this->resetDailyDebitOperationsCountIfNeeded();
+
         if ($payment->currency !== $this->currency) {
             throw new InvalidCurrencyException('Currency mismatch.');
         }
@@ -63,6 +68,7 @@ final class BankAccount
 
         $this->balance -= $totalAmount;
         ++$this->dailyDebitOperationsCount;
+        $this->lastDebitOperationDate = $this->clock->now();
     }
 
     public function getBalance(): float
@@ -70,8 +76,12 @@ final class BankAccount
         return $this->balance;
     }
 
-    public function resetDebitOperationsCount(): void
+    private function resetDailyDebitOperationsCountIfNeeded(): void
     {
-        $this->dailyDebitOperationsCount = 0;
+        $today = $this->clock->now();
+
+        if ($this->lastDebitOperationDate === null || $this->lastDebitOperationDate->format('Y-m-d') !== $today->format('Y-m-d')) {
+            $this->dailyDebitOperationsCount = 0;
+        }
     }
 }

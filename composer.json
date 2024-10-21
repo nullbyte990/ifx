@@ -3,8 +3,7 @@
     "autoload": {
         "psr-4": {
             "Ifx\\": "src/",
-            "Unit\\": "tests/unit",
-            "Integration\\": "tests/integration"
+            "Tests\\": "tests/"
         }
     },
     "authors": [

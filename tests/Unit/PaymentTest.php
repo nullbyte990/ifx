@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit;
+namespace Tests\Unit;
 
 use Ifx\Application\Exception\InvalidAmountException;
 use Ifx\Domain\CurrencyEnum;

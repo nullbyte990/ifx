@@ -3,9 +3,9 @@ FROM php:8.2.12-fpm
 ARG USERNAME=developer
 ARG WORKDIR=/application
 
-RUN apt update && apt install -y curl zsh git \
+RUN apt update && apt install -y curl zsh git libzip-dev \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && docker-php-ext-install bcmath
+    && docker-php-ext-install bcmath zip
 
 RUN echo "su - $USERNAME" > /root/.bashrc
 RUN useradd -m -s /bin/zsh $USERNAME
