@@ -1,0 +1,21 @@
+{
+    "name": "ifx/recruitment",
+    "autoload": {
+        "psr-4": {
+            "Ifx\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mateusz Mieszczak"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.4",
+        "friendsofphp/php-cs-fixer": "^3.64"
+    },
+    "scripts" : {
+        "fix" : "vendor/bin/php-cs-fixer fix src -v",
+        "test": "vendor/bin/phpunit"
+    }
+}

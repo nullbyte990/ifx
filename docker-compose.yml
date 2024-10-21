@@ -1,0 +1,11 @@
+services:
+
+  php-fpm:
+    container_name: ifx-php
+    build:
+      context: .
+      dockerfile: ./.docker/php/Dockerfile
+    working_dir: /application
+    volumes:
+      - .:/application
+    tty: true
